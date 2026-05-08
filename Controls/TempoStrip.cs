@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Avalonia;
@@ -85,6 +85,21 @@ public sealed class TempoStrip : Control
             VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center,
             IsVisible = false,
         };
+
+        // Force dark-on-light colours regardless of the active FluentTheme variant.
+        // The ControlTheme for TextBox reads these resources for every visual state,
+        // so overriding them on the TextBox.Resources level ensures the text stays
+        // visible even under the Dark theme.
+        var black = new SolidColorBrush(Colors.Black);
+        var white = new SolidColorBrush(Colors.White);
+        _editor.Resources["TextControlForeground"] = black;
+        _editor.Resources["TextControlForegroundPointerOver"] = black;
+        _editor.Resources["TextControlForegroundFocused"] = black;
+        _editor.Resources["TextControlForegroundDisabled"] = black;
+        _editor.Resources["TextControlBackground"] = white;
+        _editor.Resources["TextControlBackgroundPointerOver"] = white;
+        _editor.Resources["TextControlBackgroundFocused"] = white;
+
         _editor.KeyDown += OnEditorKeyDown;
         _editor.LostFocus += OnEditorLostFocus;
 
